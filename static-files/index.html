@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Blue - Green</title>
+<style type="text/css">
+	.pos {
+		position: fixed;
+    top: 10%;
+    left: 10%;
+    top: 50px;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    text-align: center;
+}
+
+</style>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
+$.ajaxSetup({ cache: false });
+
+$(document).ready(function() {
+	(function poll() {
+	    $.ajax({
+	        url: "/message.json",
+	        type: "GET",
+	        success: function(data) {
+	            color = data.color;
+	            $('#body-bg').css('background',color);
+	            $('#heading').css('color',color);
+	            $('#heading').html(color);
+	        },
+	        dataType: "json",
+	        complete: setTimeout(function() {poll()}, 500),
+	        timeout: 2000
+	    })
+	})();
+})
+
+</script>
+</head>
+<body id="body-bg">
+	<div class="pos"><h1 id="heading"></h1></div>
+</body>
+</html>

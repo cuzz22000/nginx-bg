@@ -1,0 +1,46 @@
+# APP DEPLOYMENT
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx-bg
+  name: nginx-bg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx-bg-exposed
+  template:
+    metadata:
+      labels:
+        run: nginx-bg-exposed
+    spec:
+      containers:
+      - image: cuzz22000/nginx-bg:latest
+        name: nginx-bg-svc
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        env:
+          - name: ENVIRONMENT
+            value: local
+
+---
+
+# APP SERVICE
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: nginx-bg
+  name: nginx-bg
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: nginx-bg-exposed
+  type: NodePort

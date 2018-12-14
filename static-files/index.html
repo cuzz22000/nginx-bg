@@ -4,13 +4,19 @@
 <style type="text/css">
 	.pos {
 		position: fixed;
-    top: 10%;
-    left: 10%;
-    top: 50px;
-    background-color: white;
-    width: 80%;
-    height: 80%;
-    text-align: center;
+    	top: 10%;
+    	left: 10%;
+    	top: 50px;
+    	background-color: white;
+    	width: 80%;
+    	height: 80%;
+    	text-align: center;
+    }
+    
+    #http-header {
+    	text-align: left;
+    	padding: 10px;
+    }
 }
 
 </style>
@@ -32,7 +38,11 @@ $(document).ready(function() {
 	            $('#heading').html(color);
 	        },
 	        dataType: "json",
-	        complete: setTimeout(function() {poll()}, 500),
+	        complete: function(jqXHR, textStatus){
+	        	$('#http-header').html('<pre>'+jqXHR.getAllResponseHeaders()+'</pre>');
+	        	setTimeout(function() {poll()}, 500);
+	        },
+	        
 	        timeout: 2000
 	    })
 	})();
@@ -41,6 +51,6 @@ $(document).ready(function() {
 </script>
 </head>
 <body id="body-bg">
-	<div class="pos"><h1 id="heading"></h1></div>
+	<div class="pos"><h1 id="heading"></h1><div id="http-header"></div></div>
 </body>
 </html>
